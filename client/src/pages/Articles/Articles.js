@@ -10,15 +10,17 @@ import { Input, TextArea, FormBtn } from "../../components/Form";
 class Articles extends Component {
   state = {
     articles: [],
-    title: "",
-    url: "",
-    date: ""
+    searchResults: [],
+    topic: "",
+    startYear: "",
+    endYear: ""
   };
 
   componentDidMount() {
     this.loadArticles();
   }
 
+  //Load saved articles from mongodb
   loadArticles = () => {
     API.getArticles()
       .then(res =>
@@ -42,13 +44,14 @@ class Articles extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveBook({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
-      })
-        .then(res => this.loadBooks())
+    if (this.state.topic) {
+      API.searchArticles(this.state.topic, this.state.startYear, this.state.endYear)
+        .then(res =>
+          {
+            this.setState({ searchResults: res.data.response.docs, topic: "", startYear: "", endYear: "" });
+            console.log(res.data.response.docs);
+          }
+        )
         .catch(err => console.log(err));
     }
   };
@@ -63,46 +66,62 @@ class Articles extends Component {
             </Jumbotron>
             <form>
               <Input
-                value={this.state.title}
+                value={this.state.topic}
                 onChange={this.handleInputChange}
-                name="title"
-                placeholder="Title (required)"
+                name="topic"
+                placeholder="Topic (required)"
               />
               <Input
-                value={this.state.author}
+                value={this.state.startYear}
                 onChange={this.handleInputChange}
-                name="author"
-                placeholder="Author (required)"
+                name="startYear"
+                placeholder="Start year"
               />
-              <TextArea
-                value={this.state.synopsis}
+              <Input
+                value={this.state.endYear}
                 onChange={this.handleInputChange}
-                name="synopsis"
-                placeholder="Synopsis (Optional)"
+                name="endYear"
+                placeholder="End year"
               />
               <FormBtn
-                disabled={!(this.state.author && this.state.title)}
+                disabled={!(this.state.topic)}
                 onClick={this.handleFormSubmit}
               >
-                Submit Book
+                Find Articles
               </FormBtn>
             </form>
           </Col>
           <Col size="md-6 sm-12">
             <Jumbotron>
-              <h1>Books On My List</h1>
+              <h1>Search Results</h1>
             </Jumbotron>
-            {this.state.books.length ? (
+            {this.state.searchResults.length ? (
               <List>
-                {this.state.books.map(book => (
-                  <ListItem key={book._id}>
-                    <Link to={"/books/" + book._id}>
+                {this.state.searchResults.map(article => (
+                  <ListItem key={article._id}>
+                    <Link to={"/articles/" + article._id}>
                       <strong>
-                        {book.title} by {book.author}
+                        {article.headline.main} <br /> {article.web_url} <br /> {article.pub_date}
                       </strong>
                     </Link>
-                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                    <DeleteBtn onClick={() => this.deleteArticle(article._id)} />
                   </ListItem>
+                ))}
+              </List>
+            ) : (
+              <h3>No Results to Display</h3>
+            )}
+          </Col>
+        </Row>
+        <Row>
+        <Col size="md-6 sm-12">
+            <Jumbotron>
+              <h1>Saved Articles</h1>
+            </Jumbotron>
+            {this.state.articles.length ? (
+              <List>
+                {this.state.articles.map(article => (
+                  <p key={article._id}>test</p>
                 ))}
               </List>
             ) : (
@@ -115,4 +134,4 @@ class Articles extends Component {
   }
 }
 
-export default Books;
+export default Articles;
