@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DeleteBtn from "../../components/DeleteBtn";
+import SaveBtn from "../../components/SaveBtn";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 import { Link } from "react-router-dom";
@@ -62,7 +63,7 @@ class Articles extends Component {
         <Row>
           <Col size="md-6">
             <Jumbotron>
-              <h1>What Books Should I Read?</h1>
+              <h1>Article Search?</h1>
             </Jumbotron>
             <form>
               <Input
@@ -104,7 +105,11 @@ class Articles extends Component {
                         {article.headline.main} <br /> {article.web_url} <br /> {article.pub_date}
                       </strong>
                     </Link>
-                    <DeleteBtn onClick={() => this.deleteArticle(article._id)} />
+                    <SaveBtn onClick={() => this.saveArticle({
+                      title: article.headline.main,
+                      url: article.web_url,
+                      date: article.pub_date
+                    })} />
                   </ListItem>
                 ))}
               </List>
