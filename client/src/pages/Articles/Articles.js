@@ -36,6 +36,16 @@ class Articles extends Component {
       .catch(err => console.log(err));
   };
 
+  saveArticle = data => {
+    console.log(data);
+    /*API.deleteArticle(id)
+      .then(res => this.loadArticles())
+      .catch(err => console.log(err));*/
+    API.saveArticle(data)
+      .then(res => this.loadArticles())
+      .catch(err => console.log(err));
+  };
+
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -100,11 +110,11 @@ class Articles extends Component {
               <List>
                 {this.state.searchResults.map(article => (
                   <ListItem key={article._id}>
-                    <Link to={"/articles/" + article._id}>
+                    <a href={article.web_url} target="_blank">
                       <strong>
                         {article.headline.main} <br /> {article.web_url} <br /> {article.pub_date}
                       </strong>
-                    </Link>
+                    </a>
                     <SaveBtn onClick={() => this.saveArticle({
                       title: article.headline.main,
                       url: article.web_url,
