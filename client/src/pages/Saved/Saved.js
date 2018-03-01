@@ -71,63 +71,8 @@ class Articles extends Component {
     return (
       <Container fluid>
         <Row>
-          <Col size="md-4">
-            <Jumbotron>
-              <h1>Article Search?</h1>
-            </Jumbotron>
-            <form>
-              <Input
-                value={this.state.topic}
-                onChange={this.handleInputChange}
-                name="topic"
-                placeholder="Topic (required)"
-              />
-              <Input
-                value={this.state.startYear}
-                onChange={this.handleInputChange}
-                name="startYear"
-                placeholder="Start year"
-              />
-              <Input
-                value={this.state.endYear}
-                onChange={this.handleInputChange}
-                name="endYear"
-                placeholder="End year"
-              />
-              <FormBtn
-                disabled={!(this.state.topic)}
-                onClick={this.handleFormSubmit}
-              >
-                Find Articles
-              </FormBtn>
-            </form>
-          </Col>
-          <Col size="md-4 sm-12">
-            <Jumbotron>
-              <h1>Search Results</h1>
-            </Jumbotron>
-            {this.state.searchResults.length ? (
-              <List>
-                {this.state.searchResults.map(article => (
-                  <ListItem key={article._id}>
-                    <a href={article.web_url} target="_blank">
-                      <strong>
-                        {article.headline.main} <br /> {article.web_url} <br /> {article.pub_date}
-                      </strong>
-                    </a>
-                    <SaveBtn onClick={() => this.saveArticle({
-                      title: article.headline.main,
-                      url: article.web_url,
-                      date: article.pub_date
-                    })} />
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-              <h3>No Results to Display</h3>
-            )}
-          </Col>
-        <Col size="md-4 sm-12">
+          
+        <Col size="md-12 sm-12">
             <Jumbotron>
               <h1>Saved Articles</h1>
             </Jumbotron>

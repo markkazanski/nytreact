@@ -10,8 +10,11 @@ const Nav = () =>
           <span className="icon-bar" />
         </button>
         <a href="/" className="navbar-brand">
-          React Reading List
+          NYT React
         </a>
+        <ul class="nav navbar-nav">
+          <li><a href="/saved">Saved Articles</a></li>
+        </ul>
       </div>
     </div>
   </nav>;
